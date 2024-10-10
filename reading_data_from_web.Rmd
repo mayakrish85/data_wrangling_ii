@@ -33,3 +33,42 @@ Load the necessary libraries.
 library(rvest)
 library(httr)
 ```
+
+## Extracting tables
+
+```{r}
+url = "http://samhda.s3-us-gov-west-1.amazonaws.com/s3fs-public/field-uploads/2k15StateFiles/NSDUHsaeShortTermCHG2015.htm"
+drug_use_html = read_html(url)
+
+drug_use_html
+```
+
+Get the pieces I actually need.
+
+```{r}
+marj_use_df = 
+  drug_use_html |> 
+  html_table() |> # from rvest package, pulls out all tables on the page
+  first() |> # takes first element out - for us it outputs the first table
+  slice(-1)
+
+marj_use_df
+```
+
+## Learning assessment
+Read in cost of living data.
+
+```{r}
+nyc_cost_df =
+  read_html("https://www.bestplaces.net/cost_of_living/city/new_york/new_york") |> 
+  html_table(header = TRUE) |> # tell html that the first row is the header
+  first()
+
+nyc_cost_df
+```
+
+## CSS Selectors
+
+
+
+
