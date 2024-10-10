@@ -91,3 +91,63 @@ nyc_cost_df
     ## 8 Miscellaneous    136.4      121.8      100.0
 
 ## CSS Selectors
+
+``` r
+swm_url = "https://www.imdb.com/list/ls070150896/"
+
+swm_html = read_html(swm_url)
+
+swm_title_vec = 
+  swm_html |> 
+  html_elements(".ipc-title-link-wrapper .ipc-title__text") |> 
+  html_text()
+
+# run time
+swm_runtime_vec = 
+  swm_html |> 
+  html_elements(".dli-title-metadata-item:nth_child(2)") |> 
+  html_text()
+
+swm_score_vec = 
+  swm_html |> 
+  html_elements(".metacritic-score-box") |> 
+  html_text()
+
+swm_df = 
+  tibble(
+    title = swm_title_vec,
+    runtime = swm_runtime_vec,
+    score = swm_score_vec
+  )
+```
+
+## Learning assessment 2
+
+Books: Use a process similar to the one above to extract the book
+titles, stars, and prices
+
+``` r
+books_url = "https://books.toscrape.com/"
+books_html = read_html(books_url)
+
+books_titles = 
+  books_html |> 
+  html_elements("h3") |> 
+  html_text2()
+
+books_stars = 
+  books_html |>
+  html_elements(".star-rating") |>
+  html_attr("class")
+
+books_price = 
+  books_html |>
+  html_elements(".price_color") |>
+  html_text()
+
+books = tibble(
+  title = books_titles,
+  stars = books_stars,
+  price = books_price
+)
+```
