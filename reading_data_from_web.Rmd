@@ -127,4 +127,45 @@ books = tibble(
 )
 ```
 
+## APIs
+
+```{r}
+# Import as CSV
+nyc_water = 
+  GET("https://data.cityofnewyork.us/resource/ia2d-e54m.csv") |> 
+  content("parsed")
+
+# Import as JSON
+nyc_water = 
+  GET("https://data.cityofnewyork.us/resource/ia2d-e54m.json") |> 
+  content("text") |>
+  jsonlite::fromJSON() |>
+  as_tibble()
+```
+
+
+By default, the CDC API limits data to the first 1000 rows. Here I’ve increased that by changing an element of the API query – I looked around the website describing the API to find the name of the argument, and then used the appropriate syntax for GET. To get the full data, I could increase this so that I get all the data at once or I could try iterating over chunks of a few thousand rows.
+
+```{r}
+brfss_smart2010 = 
+  GET("https://chronicdata.cdc.gov/resource/acme-vg9e.csv",
+      query = list("$limit" = 5000)) |> 
+  content("parsed")
+```
+
+Pokemon API Example
+
+```{r}
+poke = 
+  GET("http://pokeapi.co/api/v2/pokemon/1") |>
+  content()
+
+poke[["name"]]
+
+poke[["height"]]
+
+poke[["abilities"]]
+```
+
+
 
